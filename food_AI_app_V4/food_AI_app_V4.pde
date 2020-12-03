@@ -26,7 +26,7 @@ Table table;
 
 
 // variables
-String uname = "d9980f7cb03f346d4";
+String uname = "d9aa70f6a06b64d9e";
 long startTime, lastClickTime;
 color rColor, bgColor;
 int red, green, blue;
@@ -273,7 +273,7 @@ void logIoTDataV2(int foodPref) {
     .data("breakfast", breakfast)
     .data("lunch", lunch)
     .data("dinner", dinner)
-    .data("snack", snack).log();
+    .data("snack", snack).data("Food_Preference", foodPref).log();
 
   easy_to_make = cheap = focussed = breakfast = lunch = dinner = snack = 0;
   state = state+1;
