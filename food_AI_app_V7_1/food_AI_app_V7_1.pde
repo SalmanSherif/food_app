@@ -282,7 +282,7 @@ void draw() {
   text("Just Ok", xPosA + 916, yPosA * 0.7);
   text("Very Good", xPosA + 1064, yPosA * 0.7);
 
-  text("What is your weekly activity level?", xPosA + 768, yPosA - 50);
+  text("What is your daily activity level?", xPosA + 768, yPosA - 50);
   text("Inactive", xPosA + 768, yPosA * 1.1);
   text("On\nAverage\nActive", xPosA + 916, yPosA * 1.1);
   text("Extremely\nActive", xPosA + 1064, yPosA * 1.1);
