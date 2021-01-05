@@ -5,8 +5,8 @@ import nl.tue.id.datafoundry.*;
 // Settings for DataFoundry library
 String host = "data.id.tue.nl";
 String iot_api_token = "yDrmySAt5r77uMBLAi/osxqMZnkyF2398uD41fua6uaLamLx7rcmITpfv4fITr6b";
-String entity_api_token = "6Zy/vPZfFbh01gpudalXhkZk7ort2Lb8DBxBQ2nPY//WLf8itlUBTFPBY0Blzxl3";
-long iot_id = 849; //change to user inputs
+String entity_api_token = "K42jfbGeoMWVFBptrK12Ic9Bo+vzCpo6ONpHHE61GsMAdHg2R6z6gu4nA2suTuM8";
+long iot_id = 849; //change to user inputs8
 long entity_id = 847;
 
 // DataFoundry connection
@@ -15,6 +15,7 @@ DataFoundry df = new DataFoundry(host);
 // Access to two datasets: iotDS and entityDS
 DFDataset iotDS = df.dataset(iot_id, iot_api_token);
 DFDataset entityDS = df.dataset(entity_id, entity_api_token);
+
 //load in table
 Table recipe_table;
 
@@ -48,9 +49,6 @@ PImage food_img1;
 boolean [][] ingredientsToSend;
 String userName;
 String ageSend;
-float user_age;
-float user_weight;
-float user_height;
 float calTarget;
 int foodPref;
 int setGoal;
@@ -75,15 +73,33 @@ int dinner=0;
 PFont titleFont;
 PFont textFont;
 int state=0;
-Button bYes, bNo, bSubmit, bVegan, bVegetarian, bNonVegetarian, bIn, bCm, bLb, bKg, bNext, bLoseWeight, bMaintainWeight, bGainWeight, bLowIntensity, bHighIntensity, bMediumIntensity, bNextExercise;
-Textfield usernameExisting, usernameTextfield, ageTextfield, heightTextfield, weightTextfield, genderTextfield, durationTextfield;
+Button bYes, bNo, bSubmit, bVegan, bVegetarian, bNonVegetarian, /*bIn, bCm, bLb, bKg, */ bNext1, bNext2, bLoseWeight, bMaintainWeight, bGainWeight, bNext1Exercise, bInActive, bSlightlyActive, bAveragelyActive, bVeryActive, bExtremelyActive;
+Textfield usernameExisting, usernameTextfield, ageTextfield, heightTextfield, weightTextfield, genderTextfield;
+PImage background;
+PImage backbutton;
+Button back1, back2, back3;
+Slider weight_slider;
+DropdownList gender_list;
+
+// User data
+String user_name;
+String user_age;
+String user_height;
+String user_weight;
+float user_gender;
+String user_vegan;
+String user_vegetarian;
+String user_nonvegetarian;
+float user_weightgoal;
 
 void setup() {
-  loadTable(true); // Set true when testing;
+  //loadTable(true); // Set true when testing;
   size(480, 900);
   background(0);
   frameRate(20);
   noStroke();
+  background = loadImage("background.jpg");
+  backbutton = loadImage("back_button.JPG");
 
   cp5 = new ControlP5(this);
   PFont p = createFont("Verdana", 11); 
@@ -97,128 +113,118 @@ void setup() {
     textFont = createFont("Corbel Light", 35);
     bYes = cp5.addButton("yes").setPosition(30, 330).setSize(200, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
     bNo = cp5.addButton("no").setPosition(250, 330).setSize(200, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
-    usernameTextfield = cp5.addTextfield("username").setVisible(false).setColorCaptionLabel(color(213, 239, 197)).setColorActive(color(54, 60, 50)).setPosition(30, 410).setSize(419, 50).setFont(textFont).setFocus(true).setColorBackground(color(213, 239, 197)).setColor(color(54, 60, 50)).setColorCursor(color(54, 60, 50));
-    bSubmit = cp5.addButton("submit").setVisible(false).setPosition(30, 490).setSize(419, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
+    usernameExisting = cp5.addTextfield("username").setVisible(false).setColorCaptionLabel(color(255, 255, 255)).setColorActive(color(54, 60, 50)).setPosition(30, 410).setSize(419, 50).setFont(textFont).setFocus(true).setColorBackground(color(213, 239, 197)).setColor(color(54, 60, 50)).setColorCursor(color(54, 60, 50)).setColorForeground(color(54, 60, 50));
+    bSubmit = cp5.addButton("sign in").setVisible(false).setPosition(30, 490).setSize(419, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
 } else if (state == 1){
     textFont = createFont("Corbel Light", 35);
-    usernameTextfield = cp5.addTextfield("username").setColorCaptionLabel(color(213, 239, 197)).setColorActive(color(54, 60, 50)).setPosition(175, 240).setSize(125, 50).setFont(textFont).setFocus(true).setColorBackground(color(213, 239, 197)).setColor(color(54, 60, 50)).setColorCursor(color(54, 60, 50));
-    ageTextfield = cp5.addTextfield("age").setColorCaptionLabel(color(213, 239, 197)).setColorActive(color(54, 60, 50)).setPosition(175, 340).setSize(125, 50).setFont(textFont).setFocus(true).setColorBackground(color(213, 239, 197)).setColor(color(54, 60, 50)).setColorCursor(color(54, 60, 50));
-    heightTextfield = cp5.addTextfield("height").setColorCaptionLabel(color(213, 239, 197)).setColorActive(color(54, 60, 50)).setPosition(175, 440).setSize(125, 50).setFont(textFont).setFocus(true).setColorBackground(color(213, 239, 197)).setColor(color(54, 60, 50)).setColorCursor(color(54, 60, 50));
-    weightTextfield = cp5.addTextfield("weight").setColorCaptionLabel(color(213, 239, 197)).setColorActive(color(54, 60, 50)).setPosition(175, 540).setSize(125, 50).setFont(textFont).setFocus(true).setColorBackground(color(213, 239, 197)).setColor(color(54, 60, 50)).setColorCursor(color(54, 60, 50));
-    genderTextfield = cp5.addTextfield("gender").setColorCaptionLabel(color(213, 239, 197)).setColorActive(color(54, 60, 50)).setPosition(175, 640).setSize(125, 50).setFont(textFont).setFocus(true).setColorBackground(color(213, 239, 197)).setColor(color(54, 60, 50)).setColorCursor(color(54, 60, 50));
+    back1 = cp5.addButton("back1").setImage(backbutton).setPosition(30, 30).setSize(50, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
+    usernameTextfield = cp5.addTextfield("username").setColorCaptionLabel(color(255, 255, 255)).setColorActive(color(54, 60, 50)).setPosition(250, 240).setSize(125, 50).setFont(textFont).setFocus(true).setColorBackground(color(213, 239, 197)).setColor(color(54, 60, 50)).setColorCursor(color(54, 60, 50)).setColorForeground(color(54, 60, 50));
+    ageTextfield = cp5.addTextfield("age").setColorCaptionLabel(color(255, 255, 255)).setColorActive(color(54, 60, 50)).setPosition(250, 340).setSize(125, 50).setFont(textFont).setFocus(true).setColorBackground(color(213, 239, 197)).setColor(color(54, 60, 50)).setColorCursor(color(54, 60, 50)).setColorForeground(color(54, 60, 50));
+    heightTextfield = cp5.addTextfield("height").setColorCaptionLabel(color(255, 255, 255)).setColorActive(color(54, 60, 50)).setPosition(250, 440).setSize(125, 50).setFont(textFont).setFocus(true).setColorBackground(color(213, 239, 197)).setColor(color(54, 60, 50)).setColorCursor(color(54, 60, 50)).setColorForeground(color(54, 60, 50));
+    weightTextfield = cp5.addTextfield("weight").setColorCaptionLabel(color(255, 255, 255)).setColorActive(color(54, 60, 50)).setPosition(250, 540).setSize(125, 50).setFont(textFont).setFocus(true).setColorBackground(color(213, 239, 197)).setColor(color(54, 60, 50)).setColorCursor(color(54, 60, 50)).setColorForeground(color(54, 60, 50));
+    //genderTextfield = cp5.addTextfield("gender").setColorCaptionLabel(color(255, 255, 255)).setColorActive(color(54, 60, 50)).setPosition(250, 640).setSize(125, 50).setFont(textFont).setFocus(true).setColorBackground(color(213, 239, 197)).setColor(color(54, 60, 50)).setColorCursor(color(54, 60, 50)).setColorForeground(color(54, 60, 50));
     textFont = createFont("Corbel Light", 20);
-    bIn = cp5.addButton("in").setPosition(310, 440).setSize(50, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
-    bCm = cp5.addButton("cm").setPosition(370, 440).setSize(50, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
-    bLb = cp5.addButton("lb").setPosition(310, 540).setSize(50, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
-    bKg = cp5.addButton("kg").setPosition(370, 540).setSize(50, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
-    bNext = cp5.addButton("next").setPosition(175, 775).setSize(125, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(54, 60, 50));
+    bNext1 = cp5.addButton("next").setPosition(175, 775).setSize(125, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(54, 60, 50));
+    gender_list = cp5.addDropdownList("gender").setPosition(250, 640).setFont(textFont).setSize(125, 200).setBackgroundColor(color(190)).setBarHeight(50).setItemHeight(50).setValue(1).close().setColorLabel(color(54, 60, 50)).setColorValue(color(54, 60, 50)).addItem("Female",1).addItem("Male",2).addItem("Non-Binary", 3).setColorBackground(color(213, 239, 197)).setColorActive(color(167, 188, 154)).setColorForeground(color(167, 188, 154));
   } else if (state == 2){
+    back2 = cp5.addButton("back2").setImage(backbutton).setPosition(30, 30).setSize(50, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
     textFont = createFont("Corbel Light", 35);
     bVegan = cp5.addButton("vegan").setPosition(30, 320).setSize(419, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
     bVegetarian = cp5.addButton("vegetarian").setPosition(30, 420).setSize(419, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
     bNonVegetarian = cp5.addButton("non-vegetarian").setPosition(30, 520).setSize(419, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
   } else if (state == 3){
+    back3 = cp5.addButton("back3").setImage(backbutton).setPosition(30, 30).setSize(50, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
     textFont = createFont("Corbel Light", 35);
-    bLoseWeight = cp5.addButton("lose weight").setPosition(30, 320).setSize(419, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
-    bGainWeight = cp5.addButton("gain weight").setPosition(30, 420).setSize(419, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
-    bMaintainWeight = cp5.addButton("maintain weight").setPosition(30, 520).setSize(419, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
-  } else if (state == 4){ 
+    weight_slider = cp5.addSlider("weight_goal").setPosition(30, 320).setHeight(50).setWidth(420).setRange(-2.5, 2.5).setValue(0).setNumberOfTickMarks(51).setSliderMode(Slider.FLEXIBLE).setColorBackground(color(167, 188, 154)).setColorValue(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setColorCaptionLabel(color(0, 0, 0)).setColorForeground(color(54, 60, 50)).setLabelVisible(false);
+    textFont = createFont("Corbel Light", 20);
+    bNext2 = cp5.addButton("next ").setPosition(175, 775).setSize(125, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(54, 60, 50));
+  } else if (state == 4){
     textFont = createFont("Corbel Light", 35);
-    bLowIntensity = cp5.addButton("low intensity").setPosition(30, 320).setSize(419, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
-    bMediumIntensity = cp5.addButton("medium intensity").setPosition(30, 420).setSize(419, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
-    bHighIntensity = cp5.addButton("high intensity").setPosition(30, 520).setSize(419, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
-    durationTextfield = cp5.addTextfield("duration").setColorCaptionLabel(color(213, 239, 197)).setColorActive(color(54, 60, 50)).setPosition(185, 620).setSize(100, 50).setFont(textFont).setFocus(true).setColorBackground(color(213, 239, 197)).setColor(color(54, 60, 50)).setColorCursor(color(54, 60, 50));
-    bNextExercise = cp5.addButton("next page").setPosition(140, 775).setSize(200, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(54, 60, 50));
+    bInActive = cp5.addButton("inactive").setPosition(30, 320).setSize(419, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
+    bSlightlyActive = cp5.addButton("slightly active").setPosition(30, 390).setSize(419, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
+    bAveragelyActive = cp5.addButton("averagely active").setPosition(30, 460).setSize(419, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
+    bVeryActive = cp5.addButton("very active").setPosition(30, 530).setSize(419, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
+    bExtremelyActive = cp5.addButton("extremely active").setPosition(30, 600).setSize(419, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
+    bNext1Exercise = cp5.addButton("next page").setPosition(140, 775).setSize(200, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(54, 60, 50));
   }
   // Set interaction start time
   startTime = millis();
 }
 
 void draw() {
-  background(213, 239, 197);
+  background(background);
   fill(54, 60, 50);
   if (state == 0){
-    titleFont = createFont("Bodoni MT Black", 65);
+    titleFont = createFont("Corbel", 65);
     textFont(titleFont);
-    fill(0);
-    text("Hello!", 145, 150);
+    fill(54, 60, 50);
+    text("Hello!", 155, 150);
     textFont = createFont("Corbel Light", 30);
     textFont(textFont);
     fill(54, 60, 50);
     text("Do you already have a username?", 45, 300);
   } else if (state == 1){
-    titleFont = createFont("Bodoni MT Black", 65);
+    titleFont = createFont("Corbel", 65);
     textFont(titleFont);
-    fill(0);
-    text("Hello!", 145, 150);
+    fill(54, 60, 50);
+    text("Welcome!", 105, 150);
     textFont = createFont("Corbel Light", 35);
     textFont(textFont);
     fill(54, 60, 50);
-    text("Name:", 50, 275);
-    text("Age:", 50, 375);
-    text("Height:", 50, 475);
-    text("Weight:", 50, 575);
-    text("Gender:", 50, 675);
+    text("Name:", 115, 275);
+    text("Age:", 115, 375);
+    text("Height:", 115, 475);
+    text("Weight:", 115, 575);
+    text("Gender:", 115, 675);
+    textFont = createFont("Corbel Light", 25);
+    textFont(textFont);
+    fill(54, 60, 50);
+    text("cm", 390, 470);
+    text("kg", 390, 570);
   } else if (state == 2){
-    titleFont = createFont("Bodoni MT Black", 65);
+    titleFont = createFont("Corbel", 65);
     textFont(titleFont);
-    fill(0);
-    text("What food do", CENTER+10, 150);
-    text("you like?", CENTER+80, 250);
+    fill(54, 60, 50);
+    text("What food do", CENTER+55, 150);
+    text("you like?", CENTER+125, 250);
   } else if (state == 3){
-    titleFont = createFont("Bodoni MT Black", 65);
+    titleFont = createFont("Corbel", 55);
     textFont(titleFont);
-    fill(0);
-    text("What is", CENTER+100, 150);
-    text("your goal?", CENTER+70, 250);
-  } else if (state == 4){
-    titleFont = createFont("Bodoni MT Black", 65);
-    textFont(titleFont);
-    fill(0);
-    text("What exercise", CENTER+5, 150);
-    text("did you do?", CENTER+50, 250);
-    textFont = createFont("Corbel Light", 35);
+    fill(54, 60, 50);
+    text("What is your", CENTER+100, 150);
+    text("goal this month?", CENTER+50, 225);
+    textFont = createFont("Corbel", 30);
     textFont(textFont);
     fill(54, 60, 50);
-    text("Duration:", 40, 655);
-    text("minutes", 300, 655);
+    text("|", 37, 400);
+    text("|", 137, 400);
+    text("|", 237, 400);
+    text("|", 337, 400);
+    text("|", 437, 400);
+    textFont = createFont("Corbel Light", 20);
+    textFont(textFont);
+    fill(54, 60, 50);
+    text("-2.5 kg", 30, 435);
+    text("-1.25 kg", 120, 435);
+    text("0 kg", 230, 435);
+    text("+1.25 kg", 310, 435);
+    text("+2.5 kg", 400, 435);
+  } else if (state == 4){
+    titleFont = createFont("Corbel", 55);
+    textFont(titleFont);
+    fill(54, 60, 50);
+    text("How active were", CENTER+50, 150);
+    text("you today?", CENTER+110, 225);
+    textFont = createFont("Corbel Light", 16);
+    textFont(textFont);
+    fill(54, 60, 50);
+    text("This information helps us give more accurate recommendations", 39, 680);
   }
   
   // Check every 5 seconds
   if (millis() > 5000 && frameCount % 600 == 0) {
     //fetchData();
   }
-}
-
-float calculateMaxCal() {
-  user_age = float(cp5.get(Textfield.class, "age").getText());
-  user_height = float(cp5.get(Textfield.class, "user_height").getText());
-  user_weight = float(cp5.get(Textfield.class, "user_weight").getText());
-  int user_activity = int(cp5.get(Slider.class, "set_activity_slider").getValue());
-  float converted = 0;
-  if (user_activity == -2) {
-    converted = 1.2;
-  } else if (user_activity == -1) {
-    converted = 1.375;
-  } else if (user_activity == 0) {
-    converted = 1.55;
-  } else if (user_activity == 1) {
-    converted = 1.725;
-  } else {
-    converted = 1.9;
-  }
-  float calc1 = 66.5 + 13.8 * user_weight + 5 * user_height - 6.8 * user_age;
-  float calc2 = 655.1 + 9.6 * user_weight + 1.9 * user_height - 4.7 * user_age;
-  if (gender == 1) {
-    println("Calories are: " + calc1);
-    return converted * calc1;
-  } else if (gender == 2) {
-    println("Calories are: " + calc2);
-    return converted * calc2;
-  } else if (gender == 3) {
-    return converted * (calc1 + calc2)/2 ;
-  }
-  return -1;
 }
 
 void controlEvent(ControlEvent theEvent) {
@@ -231,72 +237,144 @@ void controlEvent(ControlEvent theEvent) {
       bNo.hide();
       setup();
     } else if (theEvent.getController().getName()=="yes"){
-      usernameTextfield.show();
+      usernameExisting.show();
       bSubmit.show();
     }
-    if (theEvent.getController().getName()=="submit"){
-      state = 4;
-      bYes.hide();
-      bNo.hide();
-      usernameExisting.hide();
-      bSubmit.hide();
-      setup();
+    if (theEvent.getController().getName()=="sign in"){
+      // select item with id and token combination
+      entityDS.id(uname).token(uname);
+      // check whether username exists
+      Map<String, Object> result = entityDS.get();
+      user_name = usernameExisting.getText();
+      // extract and check item "most_frequent_color" from the Map
+      if (result.containsValue(user_name)){
+              javax.swing.JOptionPane.showMessageDialog(null, "Welcome " + user_name + "!");
+              state = 4;
+              bYes.hide();
+              bNo.hide();
+              usernameExisting.hide();
+              bSubmit.hide();
+              setup();
+      } else {
+              javax.swing.JOptionPane.showMessageDialog(null, "This username is not yet in the dataset. Please fill in the form to create a new profile.");
+              state = 1;
+              bYes.hide();
+              bNo.hide();
+              usernameExisting.hide();
+              bSubmit.hide();
+              setup();
+      }
     }
     if (theEvent.getController().getName()=="next"){
+      user_name = usernameTextfield.getText();
+      user_age = ageTextfield.getText();
+      user_height = ageTextfield.getText();
+      user_weight = ageTextfield.getText();
+      user_gender = gender_list.getValue();
+      // select item with id and token combination
+      entityDS.id(uname).token(uname);
+      // check whether username exists
+      Map<String, Object> result = entityDS.get();
+      if (state == 1 && result.containsValue(user_name)==true){
+              javax.swing.JOptionPane.showMessageDialog(null, "An error has occured! The chosen username is already in the database or not all fields have been filled in...");
+      } else if (state == 1 && (user_name == "" || user_age == "" || user_height == "" || user_weight == "")){
+              javax.swing.JOptionPane.showMessageDialog(null, "Please fill in all the fields.");
+      } else {
       state = 2;
       usernameTextfield.hide();
       ageTextfield.hide();
       weightTextfield.hide();
       heightTextfield.hide();
-      genderTextfield.hide();
-      bIn.hide();
-      bCm.hide();
-      bKg.hide();
-      bLb.hide();
-      bNext.hide();
+      gender_list.hide();
+      bNext1.hide();
+      back1.hide();
       setup();
+      }
     }
     if (theEvent.getController().getName()=="vegan"){
       state = 3;
+      user_vegan = "true";
+      user_vegetarian = "false";
+      user_nonvegetarian = "false";
       bVegan.hide();
       bVegetarian.hide();
       bNonVegetarian.hide();
+      back2.hide();
       setup();
     } else if (theEvent.getController().getName()=="vegetarian"){
+      user_vegan = "false";
+      user_vegetarian = "true";
+      user_nonvegetarian = "false";
       state = 3;
       bVegan.hide();
       bVegetarian.hide();
       bNonVegetarian.hide();
+      back2.hide();
       setup();
     } else if (theEvent.getController().getName()=="non-vegetarian"){
+      user_vegan = "false";
+      user_vegetarian = "false";
+      user_nonvegetarian = "true";
       state = 3;
       bVegan.hide();
       bVegetarian.hide();
       bNonVegetarian.hide();
+      back2.hide();
       setup();
     }
-    if (theEvent.getController().getName()=="lose weight"){
+    if (theEvent.getController().getName()=="next "){
+      user_weightgoal = weight_slider.getValue();
+      weight_slider.hide();
       state = 4;
-      bLoseWeight.hide();
-      bGainWeight.hide();
-      bMaintainWeight.hide();
+      back3.hide();
       setup();
-    } else if (theEvent.getController().getName()=="gain weight"){
-      state = 4;
-      bLoseWeight.hide();
-      bGainWeight.hide();
-      bMaintainWeight.hide();
-      setup();
-    } else if (theEvent.getController().getName()=="maintain weight"){
-      state = 4;
-      bLoseWeight.hide();
-      bGainWeight.hide();
-      bMaintainWeight.hide();
+    }    
+    // back button functionality
+    if (theEvent.getController().getName()=="back1"){
+      state = 0;
+      usernameTextfield.hide();
+      ageTextfield.hide();
+      weightTextfield.hide();
+      heightTextfield.hide();
+      gender_list.hide();
+      bNext1.hide();
+      back1.hide();
       setup();
     }
+    if (theEvent.getController().getName()=="back2"){
+      state = 1;
+      bVegan.hide();
+      bVegetarian.hide();
+      bNonVegetarian.hide();
+      back2.hide();
+      setup();
+    }
+    if (theEvent.getController().getName()=="back3"){
+      state = 2;
+      bLoseWeight.hide();
+      bGainWeight.hide();
+      bMaintainWeight.hide();
+      back3.hide();
+    }
+
+    // select item with id and token combination
+    entityDS.id(uname).token(uname);
+    // check whether username exists
+    Map<String, Object> result = entityDS.get();
+    if (state == 4 && result.containsValue(user_name)==false) {
+        // select item with id and token combination
+        entityDS.id(uname).token(uname);
+        // add data to send (=update)
+        entityDS.data("user_name", user_name).data("user_age", user_age).data("user_height", user_height).data("user_weight", user_weight)
+        .data("user_gender", user_gender).data("user_vegan", user_vegan).data("user_vegetarian", user_vegetarian).data("user_nonvegetarian", user_nonvegetarian)
+        .data("user_weightgoal", user_weightgoal).update();
+        javax.swing.JOptionPane.showMessageDialog(null, "Welcome " + user_name + "! Your profile has successfully been generated in the database.");
+      }
   }
 }
 
+
+/*
 // To IoT dataset
 void logIoTDataV2() {
   // Set resource id (refId of device in the project)
@@ -469,3 +547,35 @@ void loadTable(boolean testing) {
     if (testing && recipe_number == 5) break; //only for testing or building.
   }
 }
+
+/*
+float calculateMaxCal() {
+  user_age = float(cp5.get(Textfield.class, "age").getText());
+  user_height = float(cp5.get(Textfield.class, "user_height").getText());
+  user_weight = float(cp5.get(Textfield.class, "user_weight").getText());
+  int user_activity = int(cp5.get(Slider.class, "set_activity_slider").getValue());
+  float converted = 0;
+  if (user_activity == -2) {
+    converted = 1.2;
+  } else if (user_activity == -1) {
+    converted = 1.375;
+  } else if (user_activity == 0) {
+    converted = 1.55;
+  } else if (user_activity == 1) {
+    converted = 1.725;
+  } else {
+    converted = 1.9;
+  }
+  float calc1 = 66.5 + 13.8 * user_weight + 5 * user_height - 6.8 * user_age;
+  float calc2 = 655.1 + 9.6 * user_weight + 1.9 * user_height - 4.7 * user_age;
+  if (gender == 1) {
+    println("Calories are: " + calc1);
+    return converted * calc1;
+  } else if (gender == 2) {
+    println("Calories are: " + calc2);
+    return converted * calc2;
+  } else if (gender == 3) {
+    return converted * (calc1 + calc2)/2 ;
+  }
+  return -1;
+*/
