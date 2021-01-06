@@ -155,19 +155,19 @@ void draw() {
   background(background);
   fill(54, 60, 50);
   if (state == 0){
-    titleFont = createFont("Corbel", 65);
+    titleFont = createFont("Corbel", 50);
     textFont(titleFont);
     fill(54, 60, 50);
-    text("Hello!", 155, 155);
+    text("Hello!", 180, 150);
     textFont = createFont("Corbel Light", 30);
     textFont(textFont);
     fill(54, 60, 50);
     text("Do you already have a username?", 45, 300);
   } else if (state == 1){
-    titleFont = createFont("Corbel", 65);
+    titleFont = createFont("Corbel", 50);
     textFont(titleFont);
     fill(54, 60, 50);
-    text("Welcome!", 105, 155);
+    text("Welcome!", 140, 150);
     textFont = createFont("Corbel Light", 35);
     textFont(textFont);
     fill(54, 60, 50);
