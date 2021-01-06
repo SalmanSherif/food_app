@@ -117,23 +117,22 @@ void setup() {
     bSubmit = cp5.addButton("sign in").setVisible(false).setPosition(30, 490).setSize(419, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
 } else if (state == 1){
     textFont = createFont("Corbel Light", 35);
-    back1 = cp5.addButton("back1").setImage(backbutton).setPosition(30, 30).setSize(50, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
-    usernameTextfield = cp5.addTextfield("username").setColorCaptionLabel(color(255, 255, 255)).setColorActive(color(54, 60, 50)).setPosition(250, 240).setSize(125, 50).setFont(textFont).setFocus(true).setColorBackground(color(213, 239, 197)).setColor(color(54, 60, 50)).setColorCursor(color(54, 60, 50)).setColorForeground(color(54, 60, 50));
-    ageTextfield = cp5.addTextfield("age").setColorCaptionLabel(color(255, 255, 255)).setColorActive(color(54, 60, 50)).setPosition(250, 340).setSize(125, 50).setFont(textFont).setFocus(true).setColorBackground(color(213, 239, 197)).setColor(color(54, 60, 50)).setColorCursor(color(54, 60, 50)).setColorForeground(color(54, 60, 50));
-    heightTextfield = cp5.addTextfield("height").setColorCaptionLabel(color(255, 255, 255)).setColorActive(color(54, 60, 50)).setPosition(250, 440).setSize(125, 50).setFont(textFont).setFocus(true).setColorBackground(color(213, 239, 197)).setColor(color(54, 60, 50)).setColorCursor(color(54, 60, 50)).setColorForeground(color(54, 60, 50));
-    weightTextfield = cp5.addTextfield("weight").setColorCaptionLabel(color(255, 255, 255)).setColorActive(color(54, 60, 50)).setPosition(250, 540).setSize(125, 50).setFont(textFont).setFocus(true).setColorBackground(color(213, 239, 197)).setColor(color(54, 60, 50)).setColorCursor(color(54, 60, 50)).setColorForeground(color(54, 60, 50));
-    //genderTextfield = cp5.addTextfield("gender").setColorCaptionLabel(color(255, 255, 255)).setColorActive(color(54, 60, 50)).setPosition(250, 640).setSize(125, 50).setFont(textFont).setFocus(true).setColorBackground(color(213, 239, 197)).setColor(color(54, 60, 50)).setColorCursor(color(54, 60, 50)).setColorForeground(color(54, 60, 50));
+    back1 = cp5.addButton("back1").setImage(backbutton).setPosition(25, 50).setSize(50, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
+    usernameTextfield = cp5.addTextfield("username").setColorCaptionLabel(color(255, 255, 255)).setColorActive(color(54, 60, 50)).setPosition(250, 270).setSize(125, 50).setFont(textFont).setFocus(true).setColorBackground(color(213, 239, 197)).setColor(color(54, 60, 50)).setColorCursor(color(54, 60, 50)).setColorForeground(color(54, 60, 50));
+    ageTextfield = cp5.addTextfield("age").setColorCaptionLabel(color(255, 255, 255)).setColorActive(color(54, 60, 50)).setPosition(250, 370).setSize(125, 50).setFont(textFont).setFocus(true).setColorBackground(color(213, 239, 197)).setColor(color(54, 60, 50)).setColorCursor(color(54, 60, 50)).setColorForeground(color(54, 60, 50));
+    heightTextfield = cp5.addTextfield("height").setColorCaptionLabel(color(255, 255, 255)).setColorActive(color(54, 60, 50)).setPosition(250, 470).setSize(125, 50).setFont(textFont).setFocus(true).setColorBackground(color(213, 239, 197)).setColor(color(54, 60, 50)).setColorCursor(color(54, 60, 50)).setColorForeground(color(54, 60, 50));
+    weightTextfield = cp5.addTextfield("weight").setColorCaptionLabel(color(255, 255, 255)).setColorActive(color(54, 60, 50)).setPosition(250, 570).setSize(125, 50).setFont(textFont).setFocus(true).setColorBackground(color(213, 239, 197)).setColor(color(54, 60, 50)).setColorCursor(color(54, 60, 50)).setColorForeground(color(54, 60, 50));
     textFont = createFont("Corbel Light", 20);
     bNext1 = cp5.addButton("next").setPosition(175, 775).setSize(125, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(54, 60, 50));
-    gender_list = cp5.addDropdownList("gender").setPosition(250, 640).setFont(textFont).setSize(125, 200).setBackgroundColor(color(190)).setBarHeight(50).setItemHeight(50).setValue(1).close().setColorLabel(color(54, 60, 50)).setColorValue(color(54, 60, 50)).addItem("Female",1).addItem("Male",2).addItem("Non-Binary", 3).setColorBackground(color(213, 239, 197)).setColorActive(color(167, 188, 154)).setColorForeground(color(167, 188, 154));
+    gender_list = cp5.addDropdownList("gender").setPosition(250, 670).setFont(textFont).setSize(125, 200).setBackgroundColor(color(190)).setBarHeight(50).setItemHeight(50).setValue(1).close().setColorLabel(color(54, 60, 50)).setColorValue(color(54, 60, 50)).addItem("Female",1).addItem("Male",2).addItem("Non-Binary", 3).setColorBackground(color(213, 239, 197)).setColorActive(color(167, 188, 154)).setColorForeground(color(167, 188, 154));
   } else if (state == 2){
-    back2 = cp5.addButton("back2").setImage(backbutton).setPosition(30, 30).setSize(50, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
+    back2 = cp5.addButton("back2").setImage(backbutton).setPosition(25, 50).setSize(50, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
     textFont = createFont("Corbel Light", 35);
     bVegan = cp5.addButton("vegan").setPosition(30, 320).setSize(419, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
     bVegetarian = cp5.addButton("vegetarian").setPosition(30, 420).setSize(419, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
     bNonVegetarian = cp5.addButton("non-vegetarian").setPosition(30, 520).setSize(419, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
   } else if (state == 3){
-    back3 = cp5.addButton("back3").setImage(backbutton).setPosition(30, 30).setSize(50, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
+    back3 = cp5.addButton("back3").setImage(backbutton).setPosition(25, 50).setSize(50, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
     textFont = createFont("Corbel Light", 35);
     weight_slider = cp5.addSlider("weight_goal").setPosition(30, 320).setHeight(50).setWidth(420).setRange(-2.5, 2.5).setValue(0).setNumberOfTickMarks(51).setSliderMode(Slider.FLEXIBLE).setColorBackground(color(167, 188, 154)).setColorValue(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setColorCaptionLabel(color(0, 0, 0)).setColorForeground(color(54, 60, 50)).setLabelVisible(false);
     textFont = createFont("Corbel Light", 20);
@@ -145,7 +144,8 @@ void setup() {
     bAveragelyActive = cp5.addButton("averagely active").setPosition(30, 460).setSize(419, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
     bVeryActive = cp5.addButton("very active").setPosition(30, 530).setSize(419, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
     bExtremelyActive = cp5.addButton("extremely active").setPosition(30, 600).setSize(419, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
-    bNext1Exercise = cp5.addButton("next page").setPosition(140, 775).setSize(200, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(54, 60, 50));
+    textFont = createFont("Corbel Light", 20);
+    bNext1Exercise = cp5.addButton("recommend").setPosition(140, 775).setSize(200, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(54, 60, 50));
   }
   // Set interaction start time
   startTime = millis();
@@ -158,7 +158,7 @@ void draw() {
     titleFont = createFont("Corbel", 65);
     textFont(titleFont);
     fill(54, 60, 50);
-    text("Hello!", 155, 150);
+    text("Hello!", 155, 155);
     textFont = createFont("Corbel Light", 30);
     textFont(textFont);
     fill(54, 60, 50);
@@ -167,32 +167,32 @@ void draw() {
     titleFont = createFont("Corbel", 65);
     textFont(titleFont);
     fill(54, 60, 50);
-    text("Welcome!", 105, 150);
+    text("Welcome!", 105, 155);
     textFont = createFont("Corbel Light", 35);
     textFont(textFont);
     fill(54, 60, 50);
-    text("Name:", 115, 275);
-    text("Age:", 115, 375);
-    text("Height:", 115, 475);
-    text("Weight:", 115, 575);
-    text("Gender:", 115, 675);
+    text("Name:", 115, 305);
+    text("Age:", 115, 405);
+    text("Height:", 115, 505);
+    text("Weight:", 115, 605);
+    text("Gender:", 115, 705);
     textFont = createFont("Corbel Light", 25);
     textFont(textFont);
     fill(54, 60, 50);
-    text("cm", 390, 470);
-    text("kg", 390, 570);
+    text("cm", 390, 500);
+    text("kg", 390, 600);
   } else if (state == 2){
-    titleFont = createFont("Corbel", 65);
+    titleFont = createFont("Corbel", 50);
     textFont(titleFont);
     fill(54, 60, 50);
-    text("What food do", CENTER+55, 150);
-    text("you like?", CENTER+125, 250);
+    text("What food do", CENTER+95, 115);
+    text("you like?", CENTER+155, 180);
   } else if (state == 3){
-    titleFont = createFont("Corbel", 55);
+    titleFont = createFont("Corbel", 50);
     textFont(titleFont);
     fill(54, 60, 50);
-    text("What is your", CENTER+100, 150);
-    text("goal this month?", CENTER+50, 225);
+    text("What is your", CENTER+110, 115);
+    text("goal this month?", CENTER+70, 180);
     textFont = createFont("Corbel", 30);
     textFont(textFont);
     fill(54, 60, 50);
@@ -210,11 +210,11 @@ void draw() {
     text("+1.25 kg", 310, 435);
     text("+2.5 kg", 400, 435);
   } else if (state == 4){
-    titleFont = createFont("Corbel", 55);
+    titleFont = createFont("Corbel", 50);
     textFont(titleFont);
     fill(54, 60, 50);
-    text("How active were", CENTER+50, 150);
-    text("you today?", CENTER+110, 225);
+    text("How active were", CENTER+60, 115);
+    text("you today?", CENTER+130, 180);
     textFont = createFont("Corbel Light", 16);
     textFont(textFont);
     fill(54, 60, 50);
