@@ -91,6 +91,12 @@ String user_vegan;
 String user_vegetarian;
 String user_nonvegetarian;
 float user_weightgoal;
+boolean inActive;
+boolean slightlyActive;
+boolean averagelyActive;
+boolean veryActive;
+boolean extremelyActive;
+float recommendedCalory;
 
 void setup() {
   //loadTable(true); // Set true when testing;
@@ -209,6 +215,11 @@ void draw() {
     text("0 kg", 230, 435);
     text("+1.25 kg", 310, 435);
     text("+2.5 kg", 400, 435);
+    textFont = createFont("Corbel Light", 16);
+    textFont(textFont);
+    fill(54, 60, 50);
+    text("Please enter whether you want to lose, gain or maintain your weight.", 25, 480);
+    text("This information helps us give more suitable recommendations.", 38, 510);
   } else if (state == 4){
     titleFont = createFont("Corbel", 50);
     textFont(titleFont);
@@ -218,7 +229,7 @@ void draw() {
     textFont = createFont("Corbel Light", 16);
     textFont(textFont);
     fill(54, 60, 50);
-    text("This information helps us give more accurate recommendations", 39, 680);
+    text("This information helps us give more suitable recommendations.", 38, 680);
   }
   
   // Check every 5 seconds
@@ -227,49 +238,67 @@ void draw() {
   }
 }
 
+// button functionality
 void controlEvent(ControlEvent theEvent) {
   if (theEvent.isController()) {
     print("control event from : "+theEvent.getController().getName());
-    println(", value : "+theEvent.getController().getValue());    
+    println(", value : "+theEvent.getController().getValue()); 
+    // if no username
     if (theEvent.getController().getName()=="no"){
       state = 1;
       bYes.hide();
       bNo.hide();
+      bSubmit.hide();
+      usernameExisting.hide();
       setup();
     } else if (theEvent.getController().getName()=="yes"){
+      // if existing username
       usernameExisting.show();
       bSubmit.show();
     }
+    // if existing username entered
     if (theEvent.getController().getName()=="sign in"){
       // select item with id and token combination
       entityDS.id(uname).token(uname);
       // check whether username exists
       Map<String, Object> result = entityDS.get();
       user_name = usernameExisting.getText();
-      // extract and check item "most_frequent_color" from the Map
       if (result.containsValue(user_name)){
-              javax.swing.JOptionPane.showMessageDialog(null, "Welcome " + user_name + "!");
-              state = 4;
-              bYes.hide();
-              bNo.hide();
-              usernameExisting.hide();
-              bSubmit.hide();
-              setup();
+        // display welcome message
+        javax.swing.JOptionPane.showMessageDialog(null, "Welcome " + user_name + "!");
+        // save all user variables locally
+        user_name = checkProfileItem(result.get("user_name"), "Null");
+        user_age = checkProfileItem(result.get("user_age"), "Null");
+        user_height = checkProfileItem(result.get("user_height"), "Null");
+        user_weight = checkProfileItem(result.get("user_weight"), "Null");
+        user_gender = parseFloat(checkProfileItem(result.get("user_gender"), "Null"));
+        user_vegan = checkProfileItem(result.get("user_vegan"), "false");
+        user_vegetarian = checkProfileItem(result.get("user_vegetarian"), "false");
+        user_nonvegetarian = checkProfileItem(result.get("user_nonvegetarian"), "false");
+        user_weightgoal = parseFloat(checkProfileItem(result.get("user_weightgoal"), "Null"));
+        javax.swing.JOptionPane.showMessageDialog(null, "user_name: " + user_name + ", user_age:" + user_age + ", user_height: " + user_height + ", user_weight: " + user_weight + ", user_gender: " + user_gender + ", user_vegan: " + user_vegan + ", user_vegetarian: " + user_vegetarian + ", user_nonvegetarian: + " + user_nonvegetarian + ", user_weightgoal: " + user_weightgoal);
+        state = 4;
+        bYes.hide();
+        bNo.hide();
+        usernameExisting.hide();
+        bSubmit.hide();
+        setup();
       } else {
-              javax.swing.JOptionPane.showMessageDialog(null, "This username is not yet in the dataset. Please fill in the form to create a new profile.");
-              state = 1;
-              bYes.hide();
-              bNo.hide();
-              usernameExisting.hide();
-              bSubmit.hide();
-              setup();
+        javax.swing.JOptionPane.showMessageDialog(null, "This username is not yet in the dataset. Please fill in the form to create a new profile.");
+        state = 1;
+        bYes.hide();
+        bNo.hide();
+        usernameExisting.hide();
+        bSubmit.hide();
+        setup();
       }
     }
+    // if introductory form filled in
     if (theEvent.getController().getName()=="next"){
       user_name = usernameTextfield.getText();
       user_age = ageTextfield.getText();
-      user_height = ageTextfield.getText();
-      user_weight = ageTextfield.getText();
+      user_height = heightTextfield.getText();
+      user_weight = weightTextfield.getText();
       user_gender = gender_list.getValue();
       // select item with id and token combination
       entityDS.id(uname).token(uname);
@@ -328,7 +357,53 @@ void controlEvent(ControlEvent theEvent) {
       state = 4;
       back3.hide();
       setup();
-    }    
+    }
+    // activity button functionality
+    if (theEvent.getController().getName()=="inactive"){
+      inActive = true;
+      slightlyActive = false;
+      averagelyActive = false;
+      veryActive = false;
+      extremelyActive = false;
+      javax.swing.JOptionPane.showMessageDialog(null, "So you were inactive today, " + user_name + "? Press recommend to confirm.");
+      println("inactive");
+    } else if (theEvent.getController().getName()=="slightly active"){
+      inActive = false;
+      slightlyActive = true;
+      averagelyActive = false;
+      veryActive = false;
+      extremelyActive = false;
+      javax.swing.JOptionPane.showMessageDialog(null, "So you were slightly active today, " + user_name + "? Press recommend to confirm.");
+      println("slightly active");
+    } else if (theEvent.getController().getName()=="averagely active"){
+      inActive = false;
+      slightlyActive = false;
+      averagelyActive = true;
+      veryActive = false;
+      extremelyActive = false;
+      javax.swing.JOptionPane.showMessageDialog(null, "So you were averagely active today, " + user_name + "? Press recommend to confirm.");
+      println("averagely active");
+    } else if (theEvent.getController().getName()=="very active"){
+      inActive = false;
+      slightlyActive = false;
+      averagelyActive = false;
+      veryActive = true;
+      extremelyActive = false;
+      javax.swing.JOptionPane.showMessageDialog(null, "So you were very active today, " + user_name + "? Press recommend to confirm.");
+      println("very active");
+    } else if (theEvent.getController().getName()=="extremely active"){
+      inActive = false;
+      slightlyActive = false;
+      averagelyActive = false;
+      veryActive = false;
+      extremelyActive = true;
+      javax.swing.JOptionPane.showMessageDialog(null, "So you were extremely active today, " + user_name + "? Press recommend to confirm.");
+      println("extremely active");
+    }
+    if (theEvent.getController().getName()=="recommend"){
+      calculateMaxCal();    
+    }
+    
     // back button functionality
     if (theEvent.getController().getName()=="back1"){
       state = 0;
@@ -356,11 +431,10 @@ void controlEvent(ControlEvent theEvent) {
       bMaintainWeight.hide();
       back3.hide();
     }
-
     // select item with id and token combination
     entityDS.id(uname).token(uname);
     // check whether username exists
-    Map<String, Object> result = entityDS.get();
+    Map<String, Object> result = entityDS.get();  
     if (state == 4 && result.containsValue(user_name)==false) {
         // select item with id and token combination
         entityDS.id(uname).token(uname);
@@ -373,63 +447,39 @@ void controlEvent(ControlEvent theEvent) {
   }
 }
 
-
-/*
-// To IoT dataset
-void logIoTDataV2() {
-  // Set resource id (refId of device in the project)
-  iotDS.device(uname);
-  String act = "other";
-  // Set activity for the log
-  if (act.equals("start") || act.equals("stop")) {
-    iotDS.activity(act);
-  } else {
-    iotDS.activity("data_entry");
+void calculateMaxCal() {
+  int user_age_int;
+  int user_height_int;
+  int user_weight_int;
+  user_age_int = parseInt(user_age);
+  user_height_int = parseInt(user_height);
+  user_weight_int = parseInt(user_weight);
+  float converted = 0;
+  if (inActive) {
+    converted = 1.2;
+  } else if (slightlyActive) {
+    converted = 1.375;
+  } else if (averagelyActive) {
+    converted = 1.55;
+  } else if (veryActive) {
+    converted = 1.725;
+  } else if (extremelyActive) {
+    converted = 1.9;
   }
-  if (mealReasonNum == 1) {
-    mealReason = "High Protein";
+  float calc1 = 66.5 + 13.8 * user_weight_int + 5 * user_height_int - 6.8 * user_age_int;
+  float calc2 = 655.1 + 9.6 * user_weight_int + 1.9 * user_height_int - 4.7 * user_age_int;
+  if (user_gender == 1) {
+    println("Calories are: " + calc1);
+    recommendedCalory = converted * calc1;
+  } else if (gender == 2) {
+    println("Calories are: " + calc2);
+    recommendedCalory = converted * calc2;
+  } else if (gender == 3) {
+    recommendedCalory = (calc1 + calc2)/2 ;
   }
-  if (mealReasonNum == 2) {
-    mealReason = "High Carb";
-  }
-  if (mealReasonNum == 3) {
-    mealReason = "High Fibre";
-  }
-  if (mealReasonNum == 4) {
-    mealReason = "High Fat";
-  }
-  if (mealHeavyLightNum == 1) {
-    mealHeavyLight = "Heavy and Filling";
-  }
-  if (mealHeavyLightNum == 2) {
-    mealHeavyLight = "Just Right for Me";
-  }
-  if (mealHeavyLightNum == 3) {
-    mealHeavyLight = "Light and Not Filling";
-  }
-  if (mealDifficultyNum == 1) {
-    mealDifficulty = "Hard to Make";
-  }
-  if (mealDifficultyNum == 2) {
-    mealDifficulty = "Easy to Make";
-  }
-  if (mealDifficultyNum == 3) {
-    mealDifficulty = "Very easy to Make";
-  }
-  // Add data, then send off the log
-  iotDS.data("Time", 0000).data("meal", count_done).data("Username", userName).data("Age", ageSend).data("Gender", gender).data("Food_Preference", foodPref).data("Target_Cal", targetCal)
-    .data("Set_Goal", setGoal).data("Set_Feeling", setFeeling).data("Set_Activity", setActivity).data("Fit_Goal", fitGoal).data("Energy_Feeling", energyFeeling)
-    .data("xOlive Oil", ingredientsToSend[count_done][1]).data("xFlour", ingredientsToSend[count_done][2]).data("xbutter", ingredientsToSend[count_done][3]).data("xChicken", ingredientsToSend[count_done][4]).data("xSugar", ingredientsToSend[count_done][5])
-    .data("xSalt", ingredientsToSend[count_done][6]).data("xEgg", ingredientsToSend[count_done][7]).data("xRice", ingredientsToSend[count_done][8]).data("xVegetable Oil", ingredientsToSend[count_done][9]).data("xPork", ingredientsToSend[count_done][10])
-    .data("xBeef", ingredientsToSend[count_done][12]).data("xCheese", ingredientsToSend[count_done][12]).data("xGarlic", ingredientsToSend[count_done][13]).data("xOrange", ingredientsToSend[count_done][14]).data("xTurkey", ingredientsToSend[count_done][15])
-    .data("xOnion", ingredientsToSend[count_done][16]).data("xCorn", ingredientsToSend[count_done][17]).data("xWhole Milk", ingredientsToSend[count_done][18]).data("xMayonnaise", ingredientsToSend[count_done][19]).data("xChiles", ingredientsToSend[count_done][20])
-    .data("xAlmonds", ingredientsToSend[count_done][21]).data("xBacon", ingredientsToSend[count_done][22]).data("xMushrooms", ingredientsToSend[count_done][23]).data("xCoconut", ingredientsToSend[count_done][24]).data("xBeets", ingredientsToSend[count_done][25])
-    .data("xStrawberries", ingredientsToSend[count_done][26]).data("xFennel", ingredientsToSend[count_done][27]).data("xLamb", ingredientsToSend[count_done][28]).data("xApple", ingredientsToSend[count_done][29]).data("xShrimp", ingredientsToSend[count_done][30])
-    .data("User_Height", user_height).data("User_Weight", user_weight).data("Meal_Reason", mealReason).data("Meal_Heavy/Light", mealHeavyLight).data("Meal_Difficulty", mealDifficulty).data("Breakfast", breakfast).data("Lunch", lunch).data("Dinner", dinner)
-    .log();
-  // EntityDS.data("Username", userName).log();
-  // easy_to_make = cheap = focussed = breakfast = lunch = dinner = snack = 0;
-  count_done = count_done+1;
+  println(recommendedCalory);
+  javax.swing.JOptionPane.showMessageDialog(null, "Your recommended daily calory intake is " + recommendedCalory + " kCal, " + user_name + "!");
+  println(user_age_int, user_height_int, user_weight_int);
 }
 
 void loadTable(boolean testing) {
@@ -547,35 +597,3 @@ void loadTable(boolean testing) {
     if (testing && recipe_number == 5) break; //only for testing or building.
   }
 }
-
-/*
-float calculateMaxCal() {
-  user_age = float(cp5.get(Textfield.class, "age").getText());
-  user_height = float(cp5.get(Textfield.class, "user_height").getText());
-  user_weight = float(cp5.get(Textfield.class, "user_weight").getText());
-  int user_activity = int(cp5.get(Slider.class, "set_activity_slider").getValue());
-  float converted = 0;
-  if (user_activity == -2) {
-    converted = 1.2;
-  } else if (user_activity == -1) {
-    converted = 1.375;
-  } else if (user_activity == 0) {
-    converted = 1.55;
-  } else if (user_activity == 1) {
-    converted = 1.725;
-  } else {
-    converted = 1.9;
-  }
-  float calc1 = 66.5 + 13.8 * user_weight + 5 * user_height - 6.8 * user_age;
-  float calc2 = 655.1 + 9.6 * user_weight + 1.9 * user_height - 4.7 * user_age;
-  if (gender == 1) {
-    println("Calories are: " + calc1);
-    return converted * calc1;
-  } else if (gender == 2) {
-    println("Calories are: " + calc2);
-    return converted * calc2;
-  } else if (gender == 3) {
-    return converted * (calc1 + calc2)/2 ;
-  }
-  return -1;
-*/
