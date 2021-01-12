@@ -147,8 +147,8 @@ Textfield durationTextfield;
 Button bYes, bNo, bSubmit, bVegan, bVegetarian, bNonVegetarian, bNext1, bNext2, bLoseWeight, bMaintainWeight, bGainWeight, bNext1Exercise, bInActive, bSlightlyActive, bAveragelyActive, bVeryActive, bExtremelyActive;
 Textfield usernameExisting, usernameTextfield, ageTextfield, heightTextfield, weightTextfield, genderTextfield;
 PImage background;
-PImage backbutton;
-Button back1, back2, back3, back4;
+PImage backbutton, backbutton_2;
+Button back1, back2, back3, back4, back5, back6;
 Slider weight_slider;
 DropdownList gender_list;
 
@@ -188,6 +188,10 @@ void setup() {
     background = loadImage("background.jpg");
   } else if (state == 5) {
     background = loadImage("background_3.jpg");
+  } else if (state == 7) {
+    background = loadImage("background_4.jpg");
+  } else if (state == 6) {
+    background = loadImage("background_5.jpg");
   } else {
     background = loadImage("background_2.jpg");
   }
@@ -207,10 +211,10 @@ void setup() {
   } else if (state == 1) {
     textFont = createFont("Corbel Light", 35);
     back1 = cp5.addButton("back1").setImage(backbutton).setPosition(25, 50).setSize(50, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
-    usernameTextfield = cp5.addTextfield("username").setColorCaptionLabel(color(255, 255, 255)).setColorActive(color(54, 60, 50)).setPosition(250, 270).setSize(125, 50).setFont(textFont).setFocus(true).setColorBackground(color(213, 239, 197)).setColor(color(54, 60, 50)).setColorCursor(color(54, 60, 50)).setColorForeground(color(54, 60, 50));
-    ageTextfield = cp5.addTextfield("age").setColorCaptionLabel(color(255, 255, 255)).setColorActive(color(54, 60, 50)).setPosition(250, 370).setSize(125, 50).setFont(textFont).setFocus(true).setColorBackground(color(213, 239, 197)).setColor(color(54, 60, 50)).setColorCursor(color(54, 60, 50)).setColorForeground(color(54, 60, 50));
-    heightTextfield = cp5.addTextfield("height").setColorCaptionLabel(color(255, 255, 255)).setColorActive(color(54, 60, 50)).setPosition(250, 470).setSize(125, 50).setFont(textFont).setFocus(true).setColorBackground(color(213, 239, 197)).setColor(color(54, 60, 50)).setColorCursor(color(54, 60, 50)).setColorForeground(color(54, 60, 50));
-    weightTextfield = cp5.addTextfield("weight").setColorCaptionLabel(color(255, 255, 255)).setColorActive(color(54, 60, 50)).setPosition(250, 570).setSize(125, 50).setFont(textFont).setFocus(true).setColorBackground(color(213, 239, 197)).setColor(color(54, 60, 50)).setColorCursor(color(54, 60, 50)).setColorForeground(color(54, 60, 50));
+    usernameTextfield = cp5.addTextfield("username").setColorCaptionLabel(color(255, 255, 255)).setColorActive(color(54, 60, 50)).setPosition(250, 270).setSize(125, 50).setFont(textFont).setFocus(true).setColorBackground(color(213, 239, 197)).setColor(color(54, 60, 50)).setColorCursor(color(54, 60, 50)).setColorForeground(color(255, 255, 255));
+    ageTextfield = cp5.addTextfield("age").setColorCaptionLabel(color(255, 255, 255)).setColorActive(color(54, 60, 50)).setPosition(250, 370).setSize(125, 50).setFont(textFont).setFocus(true).setColorBackground(color(213, 239, 197)).setColor(color(54, 60, 50)).setColorCursor(color(54, 60, 50)).setColorForeground(color(255, 255, 255));
+    heightTextfield = cp5.addTextfield("height").setColorCaptionLabel(color(255, 255, 255)).setColorActive(color(54, 60, 50)).setPosition(250, 470).setSize(125, 50).setFont(textFont).setFocus(true).setColorBackground(color(213, 239, 197)).setColor(color(54, 60, 50)).setColorCursor(color(54, 60, 50)).setColorForeground(color(255, 255, 255));
+    weightTextfield = cp5.addTextfield("weight").setColorCaptionLabel(color(255, 255, 255)).setColorActive(color(54, 60, 50)).setPosition(250, 570).setSize(125, 50).setFont(textFont).setFocus(true).setColorBackground(color(213, 239, 197)).setColor(color(54, 60, 50)).setColorCursor(color(54, 60, 50)).setColorForeground(color(255, 255, 255));
     textFont = createFont("Corbel Light", 20);
     bNext1 = cp5.addButton("next").setPosition(175, 775).setSize(125, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(54, 60, 50));
     gender_list = cp5.addDropdownList("gender").setPosition(250, 670).setFont(textFont).setSize(125, 200).setBackgroundColor(color(190)).setBarHeight(50).setItemHeight(50).setValue(1).close().setColorLabel(color(54, 60, 50)).setColorValue(color(54, 60, 50)).addItem("Female", 1).addItem("Male", 2).addItem("Non-Binary", 3).setColorBackground(color(213, 239, 197)).setColorActive(color(167, 188, 154)).setColorForeground(color(167, 188, 154));
@@ -243,28 +247,31 @@ void setup() {
     bMediumMeal = cp5.addButton("Medium Meal").setPosition(30, 620).setSize(419, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
     bHeavyMeal = cp5.addButton("Heavy Meal").setPosition(30, 720).setSize(419, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
   } else if (state == 6) {
+    textFont = createFont("Corbel Light", 35);
+    back5 = cp5.addButton("back5").setImage(backbutton).setPosition(25, 60).setSize(50, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
     textFont = createFont("Corbel Light", 20);
-    bEat1 = cp5.addButton("Eat1").setCaptionLabel("Eat!").setPosition(30, 120).setSize(80, 40).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(0, 255, 128)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(50, 205, 50));
-    bDislike1 = cp5.addButton("Dislike1").setCaptionLabel("Dislike").setPosition(350, 120).setSize(100, 40).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(128, 0, 0)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(164, 65, 65));
-    bSkip1 = cp5.addButton("Skip1").setCaptionLabel("Skip").setPosition(350, 170).setSize(100, 40).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(128, 128, 128)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(137, 123, 123));
-    bRecipe1 = cp5.addButton("Recipe1").setPosition(120, 120).setSize(220, 200).setColorCaptionLabel(color(255, 255, 255, 1)).setColorForeground(color(128, 128, 128, 100)).setColorActive(color(54, 60, 50, 1)).setFont(textFont).setColorBackground(color(100, 0, 0, 1));
+    bEat1 = cp5.addButton("Eat1").setCaptionLabel("Eat!").setPosition(30, 160).setSize(80, 40).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(0, 255, 128)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(50, 205, 50));
+    bDislike1 = cp5.addButton("Dislike1").setCaptionLabel("Dislike").setPosition(350, 160).setSize(100, 40).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(128, 0, 0)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(164, 65, 65));
+    bSkip1 = cp5.addButton("Skip1").setCaptionLabel("Skip").setPosition(350, 210).setSize(100, 40).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(128, 128, 128)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(137, 123, 123));
+    bRecipe1 = cp5.addButton("Recipe1").setPosition(120, 120).setSize(220, 240).setColorCaptionLabel(color(255, 255, 255, 1)).setColorForeground(color(128, 128, 128, 100)).setColorActive(color(54, 60, 50, 1)).setFont(textFont).setColorBackground(color(100, 0, 0, 1));
 
-    bEat2 = cp5.addButton("Eat2").setCaptionLabel("Eat!").setPosition(30, 370).setSize(80, 40).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(0, 255, 128)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(50, 205, 50));
-    bDislike2 = cp5.addButton("Dislike2").setCaptionLabel("Dislike").setPosition(350, 370).setSize(100, 40).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(128, 0, 0)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(164, 65, 65));
-    bSkip2 = cp5.addButton("Skip2").setCaptionLabel("Skip").setPosition(350, 420).setSize(100, 40).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(128, 128, 128)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(137, 123, 123));
-    bRecipe2 = cp5.addButton("Recipe2").setPosition(120, 370).setSize(220, 200).setColorCaptionLabel(color(255, 255, 255, 1)).setColorForeground(color(128, 128, 128, 100)).setColorActive(color(54, 60, 50, 1)).setFont(textFont).setColorBackground(color(100, 0, 0, 1));
+    bEat2 = cp5.addButton("Eat2").setCaptionLabel("Eat!").setPosition(30, 410).setSize(80, 40).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(0, 255, 128)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(50, 205, 50));
+    bDislike2 = cp5.addButton("Dislike2").setCaptionLabel("Dislike").setPosition(350, 410).setSize(100, 40).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(128, 0, 0)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(164, 65, 65));
+    bSkip2 = cp5.addButton("Skip2").setCaptionLabel("Skip").setPosition(350, 460).setSize(100, 40).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(128, 128, 128)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(137, 123, 123));
+    bRecipe2 = cp5.addButton("Recipe2").setPosition(120, 370).setSize(220, 240).setColorCaptionLabel(color(255, 255, 255, 1)).setColorForeground(color(128, 128, 128, 100)).setColorActive(color(54, 60, 50, 1)).setFont(textFont).setColorBackground(color(100, 0, 0, 1));
 
-    bEat3 = cp5.addButton("Eat3").setCaptionLabel("Eat!").setPosition(30, 620).setSize(80, 40).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(0, 255, 128)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(50, 205, 50));
-    bDislike3 = cp5.addButton("Dislike3").setCaptionLabel("Dislike").setPosition(350, 620).setSize(100, 40).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(128, 0, 0)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(164, 65, 65));
-    bSkip3 = cp5.addButton("Skip3").setCaptionLabel("Skip").setPosition(350, 670).setSize(100, 40).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(128, 128, 128)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(137, 123, 123));
-    bRecipe3 = cp5.addButton("Recipe3").setPosition(120, 620).setSize(220, 200).setColorCaptionLabel(color(255, 255, 255, 1)).setColorForeground(color(128, 128, 128, 100)).setColorActive(color(54, 60, 50, 1)).setFont(textFont).setColorBackground(color(100, 0, 0, 1));
+    bEat3 = cp5.addButton("Eat3").setCaptionLabel("Eat!").setPosition(30, 660).setSize(80, 40).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(0, 255, 128)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(50, 205, 50));
+    bDislike3 = cp5.addButton("Dislike3").setCaptionLabel("Dislike").setPosition(350, 660).setSize(100, 40).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(128, 0, 0)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(164, 65, 65));
+    bSkip3 = cp5.addButton("Skip3").setCaptionLabel("Skip").setPosition(350, 710).setSize(100, 40).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(128, 128, 128)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(137, 123, 123));
+    bRecipe3 = cp5.addButton("Recipe3").setPosition(120, 620).setSize(220, 240).setColorCaptionLabel(color(255, 255, 255, 1)).setColorForeground(color(128, 128, 128, 100)).setColorActive(color(54, 60, 50, 1)).setFont(textFont).setColorBackground(color(100, 0, 0, 1));
   } else if (state == 7) {
+    textFont = createFont("Corbel Light", 35);
+    back6 = cp5.addButton("back6").setImage(backbutton).setPosition(25, 60).setSize(50, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
     textFont = createFont("Corbel Light", 20);
     bEatHightlight =cp5.addButton("EatHighlight").setCaptionLabel("Eat!").setPosition(30, 800).setSize(80, 40).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(0, 255, 128)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(50, 205, 50));
     bSkipHightlight = cp5.addButton("SkipHighlight").setCaptionLabel("Skip").setPosition(180, 800).setSize(100, 40).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(128, 128, 128)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(137, 123, 123));
     bDislikeHightlight = cp5.addButton("DislikeHighlight").setCaptionLabel("Dislike").setPosition(350, 800).setSize(100, 40).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(128, 0, 0)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(164, 65, 65));
     textFont = createFont("Corbel Light", 25);
-    bBackHighlight = cp5.addButton("BackHighlight").setCaptionLabel("Back").setPosition(20, 20).setSize(60, 40).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(0, 165, 255)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(0, 165, 255));
   }
   // Set interaction start time
   loadData(dataPath("reduced_rand.arff"));
@@ -466,41 +473,42 @@ void draw() {
     line(345, 395, 345+progressFatBar, 395);
     //println(progressCarbsBar);
   } else if (state == 6) {
+    titleFont = createFont("Corbel", 25);
+    textFont(titleFont);
+    text("Your recommended recipes:", 90, 93);
     subTitleFont = createFont("Corbel", 22);
     textFont(subTitleFont);
     noFill();
     stroke(0);
     strokeWeight(1);
-    rect(120, 120, 220, 200);
-    rect(120, 370, 220, 200);
-    rect(120, 620, 220, 200);
-    image(recipe_img[imageRecipe1], 120, 120, 220, 200);
-    image(recipe_img[imageRecipe2], 120, 370, 220, 200);
-    image(recipe_img[imageRecipe3], 120, 620, 220, 200);
-
+    rect(120, 160, 220, 200);
+    rect(120, 410, 220, 200);
+    rect(120, 660, 220, 200);
+    image(recipe_img[imageRecipe1], 120, 160, 220, 200);
+    image(recipe_img[imageRecipe2], 120, 410, 220, 200);
+    image(recipe_img[imageRecipe3], 120, 660, 220, 200);
     stringTitleRecipe1 =  recipe_table.getString(titleRecipe1-1, "Recipe_Name [string]");
     stringTitleRecipe2 =  recipe_table.getString(titleRecipe2-1, "Recipe_Name [string]");
     stringTitleRecipe3 =  recipe_table.getString(titleRecipe3-1, "Recipe_Name [string]");
-
-    text(stringTitleRecipe1, 120, 110);
-    text(stringTitleRecipe2, 120, 360);
-    text(stringTitleRecipe3, 120, 610);
+    text(stringTitleRecipe1, 120, 150);
+    text(stringTitleRecipe2, 120, 400);
+    text(stringTitleRecipe3, 120, 650);
   } else if (state == 7) {
     if (mealHighlight == 1) {
-      image(recipe_img[imageRecipe1], 0, 0, width, height/3);
+      image(recipe_img[imageRecipe1], 40, 150, 400, 270);
       stringTitleRecipeHighlight = recipe_table.getString(titleRecipe1-1, "Recipe_Name [string]");
     }
     if (mealHighlight == 2) {
-      image(recipe_img[imageRecipe2], 0, 0, width, height/3);
+      image(recipe_img[imageRecipe2], 40, 150, 400, 270);
       stringTitleRecipeHighlight = recipe_table.getString(titleRecipe2-1, "Recipe_Name [string]");
     }
     if (mealHighlight == 3) {
-      image(recipe_img[imageRecipe3], 0, 0, width, height/3);
+      image(recipe_img[imageRecipe3], 40, 150, 400, 270);
       stringTitleRecipeHighlight = recipe_table.getString(titleRecipe3-1, "Recipe_Name [string]");
     }
-    subTitleFont = createFont("Corbel", 22);
+    subTitleFont = createFont("Corbel", 25);
     textFont(subTitleFont);
-    text(stringTitleRecipeHighlight, 20, 350);
+    text(stringTitleRecipeHighlight, 90, 95);
     mainNumber = createFont("Corbel Bold", 25);
     textFont(mainNumber);
     //text("Kcal: " + addedCal, 20, 450);
@@ -512,12 +520,12 @@ void draw() {
     totalCurrentFat = currentFat+addedFat;
     totalCurrentProtein = currentProtein+addedProtein;
 
-    text("Carbs", 30, 550);
-    text("Fat", 180, 550);
-    text("Protein", 330, 550);
-    text(nf(totalCurrentCarbs, 0, 1)+ " / " + maxCarbs, 20, 600);
-    text(nf(totalCurrentFat, 0, 1)+ " / " + maxFat, 170, 600);
-    text(nf(totalCurrentProtein, 0, 1)+ " / " + maxProtein, 320, 600);
+    text("Carbs", 40, 550);
+    text("Fat", 190, 550);
+    text("Protein", 340, 550);
+    text(nf(totalCurrentCarbs, 0, 1)+ " / " + maxCarbs, 30, 600);
+    text(nf(totalCurrentFat, 0, 1)+ " / " + maxFat, 180, 600);
+    text(nf(totalCurrentProtein, 0, 1)+ " / " + maxProtein, 330, 600);
   }
 
   // Check every 5 seconds
@@ -860,14 +868,14 @@ void controlEvent(ControlEvent theEvent) {
       bRecipe3.hide();
       setup();
     }
-    if (theEvent.getController().getName()=="BackHighlight") {
+    if (theEvent.getController().getName()=="back6") {
       state = 6;
-      bBackHighlight.hide();
       bEatHightlight.hide();
       bSkipHightlight.hide();
       bDislikeHightlight.hide();
+      back6.hide();
       setup();
-    }    
+    }
     // back button functionality
     if (theEvent.getController().getName()=="back1") {
       state = 0;
@@ -890,9 +898,8 @@ void controlEvent(ControlEvent theEvent) {
     }
     if (theEvent.getController().getName()=="back3") {
       state = 2;
-      bLoseWeight.hide();
-      bGainWeight.hide();
-      bMaintainWeight.hide();
+      weight_slider.hide();
+      bNext2.hide();
       back3.hide();
       setup();
     }
@@ -903,6 +910,13 @@ void controlEvent(ControlEvent theEvent) {
       bHeavyMeal.hide();
       back4.hide();
       setup();
+    }
+    if (theEvent.getController().getName()=="back5"){
+      state = 6;
+      bEatHightlight.hide();
+      bSkipHightlight.hide();
+      bDislikeHightlight.hide();
+      back5.hide();
     }
   }
 }
