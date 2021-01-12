@@ -76,7 +76,6 @@ PFont textFont;
 PFont subTitleFont;
 PFont mainNumber;
 PFont subNumber;
-int state=0; //change this to start at different screens
 
 //int genderSelect;                
 int mealType;                    //1 = light meal, 2 = medium meal, 3 = heavy meal
@@ -149,7 +148,7 @@ Button bYes, bNo, bSubmit, bVegan, bVegetarian, bNonVegetarian, bNext1, bNext2, 
 Textfield usernameExisting, usernameTextfield, ageTextfield, heightTextfield, weightTextfield, genderTextfield;
 PImage background;
 PImage backbutton;
-Button back1, back2, back3;
+Button back1, back2, back3, back4;
 Slider weight_slider;
 DropdownList gender_list;
 
@@ -170,6 +169,8 @@ boolean veryActive;
 boolean extremelyActive;
 float recommendedCalory = 2000;
 
+int state=0; //change this to start at different screens
+
 void setup() {
 
   if (startUp == 0) {
@@ -182,8 +183,14 @@ void setup() {
   background(0);
   frameRate(20);
   noStroke();
-
-  background = loadImage("background.jpg");
+  
+  if (state < 5){
+    background = loadImage("background.jpg");
+  } else if (state == 5) {
+    background = loadImage("background_3.jpg");
+  } else {
+    background = loadImage("background_2.jpg");
+  }
   backbutton = loadImage("back_button.JPG");
 
   cp5 = new ControlP5(this);
@@ -229,18 +236,14 @@ void setup() {
     textFont = createFont("Corbel Light", 20);
     bNext1Exercise = cp5.addButton("recommend").setPosition(140, 775).setSize(200, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(54, 60, 50));
   } else if (state == 5) {
-    bInActive.hide();
-    bSlightlyActive.hide();
-    bAveragelyActive.hide();
-    bVeryActive.hide();
-    bExtremelyActive.hide();
-    bNext1Exercise.hide();
+    textFont = createFont("Corbel Light", 35);
+    back4 = cp5.addButton("back4").setImage(backbutton).setPosition(25, 50).setSize(50, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
     textFont = createFont("Corbel Light", 35);
     bLightMeal = cp5.addButton("Light Meal").setPosition(30, 520).setSize(419, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
     bMediumMeal = cp5.addButton("Medium Meal").setPosition(30, 620).setSize(419, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
     bHeavyMeal = cp5.addButton("Heavy Meal").setPosition(30, 720).setSize(419, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
   } else if (state == 6) {
-    textFont = createFont("Corbel Light", 30);
+    textFont = createFont("Corbel Light", 20);
     bEat1 = cp5.addButton("Eat1").setCaptionLabel("Eat!").setPosition(30, 120).setSize(80, 40).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(0, 255, 128)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(50, 205, 50));
     bDislike1 = cp5.addButton("Dislike1").setCaptionLabel("Dislike").setPosition(350, 120).setSize(100, 40).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(128, 0, 0)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(164, 65, 65));
     bSkip1 = cp5.addButton("Skip1").setCaptionLabel("Skip").setPosition(350, 170).setSize(100, 40).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(128, 128, 128)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(137, 123, 123));
@@ -256,7 +259,7 @@ void setup() {
     bSkip3 = cp5.addButton("Skip3").setCaptionLabel("Skip").setPosition(350, 670).setSize(100, 40).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(128, 128, 128)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(137, 123, 123));
     bRecipe3 = cp5.addButton("Recipe3").setPosition(120, 620).setSize(220, 200).setColorCaptionLabel(color(255, 255, 255, 1)).setColorForeground(color(128, 128, 128, 100)).setColorActive(color(54, 60, 50, 1)).setFont(textFont).setColorBackground(color(100, 0, 0, 1));
   } else if (state == 7) {
-    textFont = createFont("Corbel Light", 35);
+    textFont = createFont("Corbel Light", 20);
     bEatHightlight =cp5.addButton("EatHighlight").setCaptionLabel("Eat!").setPosition(30, 800).setSize(80, 40).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(0, 255, 128)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(50, 205, 50));
     bSkipHightlight = cp5.addButton("SkipHighlight").setCaptionLabel("Skip").setPosition(180, 800).setSize(100, 40).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(128, 128, 128)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(137, 123, 123));
     bDislikeHightlight = cp5.addButton("DislikeHighlight").setCaptionLabel("Dislike").setPosition(350, 800).setSize(100, 40).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(128, 0, 0)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(164, 65, 65));
@@ -289,10 +292,9 @@ void setup() {
     mealReasonSelect = "High Fat";
   }
 
-  //println(predict1());
-  //println(predict2());
+  println(predict1());
+  println(predict2());
   // println(predict3()); 
-
 
   // Set interaction start time
   startTime = millis();
@@ -413,19 +415,13 @@ void draw() {
     fill(54, 60, 50);
     text("This information helps us give more suitable recommendations.", 38, 680);
   } else if (state == 5) {
-    bInActive.hide();
-    bSlightlyActive.hide();
-    bAveragelyActive.hide();
-    bVeryActive.hide();
-    bExtremelyActive.hide();
-    bNext1Exercise.hide();
-    titleFont = createFont("Bodoni MT Black", 65);
+    titleFont = createFont("Corbel", 50);
     textFont(titleFont);
     fill(0);
-    text("Overview", CENTER+90, 150);
-    subTitleFont = createFont("Bodoni MT Black", 35);
-    textFont(subTitleFont);
-    text("Choose your meal!", CENTER+70, 480);
+    text("Overview", CENTER+130, 120);
+    titleFont = createFont("Corbel", 40);
+    textFont(titleFont);
+    text("Choose your meal!", CENTER+80, 480);
     textFont = createFont("Corbel Light", 25);
     textFont(textFont);
     //fill(54, 60, 50);
@@ -470,7 +466,7 @@ void draw() {
     line(345, 395, 345+progressFatBar, 395);
     //println(progressCarbsBar);
   } else if (state == 6) {
-    subTitleFont = createFont("Bodoni MT Black", 18);
+    subTitleFont = createFont("Corbel", 22);
     textFont(subTitleFont);
     noFill();
     stroke(0);
@@ -502,7 +498,7 @@ void draw() {
       image(recipe_img[imageRecipe3], 0, 0, width, height/3);
       stringTitleRecipeHighlight = recipe_table.getString(titleRecipe3-1, "Recipe_Name [string]");
     }
-    subTitleFont = createFont("Bodoni MT Black", 18);
+    subTitleFont = createFont("Corbel", 22);
     textFont(subTitleFont);
     text(stringTitleRecipeHighlight, 20, 350);
     mainNumber = createFont("Corbel Bold", 25);
@@ -752,7 +748,7 @@ void controlEvent(ControlEvent theEvent) {
       println("extremely active");
     }
     if (theEvent.getController().getName()=="recommend") {  
-      state = 6;
+      state = 5;
       println("test");
       //predict1();
       //predict2();
@@ -776,6 +772,7 @@ void controlEvent(ControlEvent theEvent) {
       bLightMeal.hide();
       bMediumMeal.hide();
       bHeavyMeal.hide();
+      back4.hide();
       setup();
     }
     if (theEvent.getController().getName()=="Medium Meal") {
@@ -784,6 +781,7 @@ void controlEvent(ControlEvent theEvent) {
       bLightMeal.hide();
       bMediumMeal.hide();
       bHeavyMeal.hide();
+      back4.hide();
       setup();
     }
     if (theEvent.getController().getName()=="Heavy Meal") {
@@ -792,6 +790,7 @@ void controlEvent(ControlEvent theEvent) {
       bLightMeal.hide();
       bMediumMeal.hide();
       bHeavyMeal.hide();
+      back4.hide();
       setup();
     }
 
@@ -895,6 +894,15 @@ void controlEvent(ControlEvent theEvent) {
       bGainWeight.hide();
       bMaintainWeight.hide();
       back3.hide();
+      setup();
+    }
+    if (theEvent.getController().getName()=="back4"){
+      state = 4;
+      bLightMeal.hide();
+      bMediumMeal.hide();
+      bHeavyMeal.hide();
+      back4.hide();
+      setup();
     }
   }
 }
