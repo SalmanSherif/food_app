@@ -23,9 +23,9 @@ Instances data = null;
 
 // Settings for DataFoundry library
 String host = "data.id.tue.nl";
-String iot_api_token = "yDrmySAt5r77uMBLAi/osxqMZnkyF2398uD41fua6uaLamLx7rcmITpfv4fITr6b";
+String iot_api_token = "9QuRXGYI3Z8mQE7oHAiwmm2gjDc6Aj1EG+uRZ4M1JRIzhdJVljnc54QGFfwsFyPl";
 String entity_api_token = "K42jfbGeoMWVFBptrK12Ic9Bo+vzCpo6ONpHHE61GsMAdHg2R6z6gu4nA2suTuM8";
-long iot_id = 849; //change to user inputs8
+long iot_id = 908; //change to user inputs8
 long entity_id = 847;
 
 // DataFoundry connection
@@ -161,7 +161,10 @@ Button bYes, bNo, bSubmit, bVegan, bVegetarian, bNonVegetarian, bNext1, bNext2, 
 Textfield usernameExisting, usernameTextfield, ageTextfield, heightTextfield, weightTextfield, genderTextfield;
 PImage background;
 PImage backbutton, backbutton_2;
-Button back1, back2, back3, back4, back5, back6;
+Button back1, back2, back3, back4, back5, back6, back7;
+Button bSubmitFinal;
+Slider recommandationSlider, fitGoalSlider;
+
 Slider weight_slider;
 DropdownList gender_list;
 
@@ -183,6 +186,8 @@ boolean extremelyActive;
 float recommendedCalory = 2000;
 int predictLoop = 0;
 int state=0; //change this to start at different screens
+int recommandationLike;
+int confirmedMeal;
 
 void setup() {
   //---------------------------------------------------NEW-------------------------
@@ -196,7 +201,7 @@ void setup() {
   println(predict1() + " " +predict2());
   if (startUp == 0) {
     loadTable(false); // Set true when testing;
-    predict3 = int(random(0, 60));
+    predict3 = int(random(1, 20));
     startUp = startUp + 1;
   }
 
@@ -296,7 +301,15 @@ void setup() {
     bSkipHightlight = cp5.addButton("SkipHighlight").setCaptionLabel("Skip").setPosition(180, 800).setSize(100, 40).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(128, 128, 128)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(137, 123, 123));
     bDislikeHightlight = cp5.addButton("DislikeHighlight").setCaptionLabel("Dislike").setPosition(350, 800).setSize(100, 40).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(128, 0, 0)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(164, 65, 65));
     textFont = createFont("Corbel Light", 25);
+  } else if (state == 8) {
+    textFont = createFont("Corbel Light", 35);
+    back6 = cp5.addButton("back6").setImage(backbutton).setPosition(25, 60).setSize(50, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(167, 188, 154));
+    textFont = createFont("Corbel Light", 20);
+    recommandationSlider = cp5.addSlider("recommandationSlider").setPosition(30, 240).setHeight(50).setWidth(420).setRange(-2.5, 2.5).setValue(0).setNumberOfTickMarks(51).setSliderMode(Slider.FLEXIBLE).setColorBackground(color(167, 188, 154)).setColorValue(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setColorCaptionLabel(color(0, 0, 0)).setColorForeground(color(54, 60, 50)).setLabelVisible(false);
+    fitGoalSlider = cp5.addSlider("fitGoalSlider").setPosition(30, 520).setHeight(50).setWidth(420).setRange(-2.5, 2.5).setValue(0).setNumberOfTickMarks(51).setSliderMode(Slider.FLEXIBLE).setColorBackground(color(167, 188, 154)).setColorValue(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setColorCaptionLabel(color(0, 0, 0)).setColorForeground(color(54, 60, 50)).setLabelVisible(false);
+    bSubmitFinal = cp5.addButton("submitFinal").setCaptionLabel("submit").setPosition(140, 775).setSize(200, 50).setColorCaptionLabel(color(255, 255, 255)).setColorForeground(color(54, 60, 50)).setColorActive(color(54, 60, 50)).setFont(textFont).setColorBackground(color(54, 60, 50));
   }
+
 
   if (mealType == 1) {
     mealTypeSelect = "Light and Not Filling";
@@ -365,7 +378,7 @@ void draw() {
   progressFatBar = map(progressFat, 0, 1, 0, 80);
 
 
-  imageRecipe3 = int(predict3);
+
 
 
 
@@ -434,11 +447,11 @@ void draw() {
     textFont(titleFont);
     fill(54, 60, 50);
     text("How active were", CENTER+60, 115);
-    text("you today?", CENTER+130, 180);
-    textFont = createFont("Corbel Light", 16);
+    text("you this week?", CENTER+130, 180);
+    textFont = createFont("Corbel Light", 14);
     textFont(textFont);
     fill(54, 60, 50);
-    text("This information helps us give more suitable recommendations.", 38, 680);
+    text("* This information helps us change your diet based on \n  your activity level.\n Inactive is: excersizing 0 to 1 times a week   \n  Averagely active is: excersizing 3 to 5 times a week \n Extremely active is: excersizing 7 times a week", 38, 680);
   } else if (state == 5) {
     titleFont = createFont("Corbel", 50);
     textFont(titleFont);
@@ -490,6 +503,11 @@ void draw() {
     line(200, 395, 200+progressProteinBar, 395);
     line(345, 395, 345+progressFatBar, 395);
     //println(progressCarbsBar);
+    
+    textFont = createFont("Corbel Light", 14);
+    textFont(textFont);
+    fill(54, 60, 50);
+    text("* A light meal is a small quick meal \n  A medium meal is a regular sized portion for lunch or dinner \n  A heavy meal is very filling", 38, 800);
   } else if (state == 6) {
     titleFont = createFont("Corbel", 25);
     textFont(titleFont);
@@ -502,6 +520,8 @@ void draw() {
     rect(120, 160, 220, 200);
     rect(120, 410, 220, 200);
     rect(120, 660, 220, 200);
+
+    imageRecipe3 = int(predict3);
     titleRecipe1 = imageRecipe1;
     titleRecipe2 = imageRecipe2;
     titleRecipe3 = imageRecipe3;
@@ -551,6 +571,34 @@ void draw() {
     text(nf(totalCurrentCarbs, 0, 1)+ " / " + maxCarbs, 30, 600);
     text(nf(totalCurrentFat, 0, 1)+ " / " + maxFat, 180, 600);
     text(nf(totalCurrentProtein, 0, 1)+ " / " + maxProtein, 330, 600);
+  } else if (state == 8) {
+    titleFont = createFont("Corbel", 25);
+    textFont(titleFont);
+    text("How much do you like your \nrecommendation?", 30, 195);
+    text("How well does this fit \nyour goal?", 30, 470);
+    textFont = createFont("Corbel", 30);
+    textFont(textFont);
+    text("|", 37, 320);
+    text("|", 137, 320);
+    text("|", 237, 320);
+    text("|", 337, 320);
+    text("|", 437, 320);
+
+    text("|", 37, 595);
+    text("|", 137, 595);
+    text("|", 237, 595);
+    text("|", 337, 595);
+    text("|", 437, 595);
+    textFont = createFont("Corbel", 20);
+    textFont(textFont);
+    text("not so much", 30, 345);
+    text("not so well", 30, 615);
+    text("very much", 370, 345);
+    text("very well", 380, 615);
+    textFont = createFont("Corbel Light", 16);
+    textFont(textFont);
+    fill(54, 60, 50);
+    text("This information is collected to improve your recommendations.", 38, 750);
   }
 
   // Check every 5 seconds
@@ -716,6 +764,7 @@ void controlEvent(ControlEvent theEvent) {
       back2.hide();
       setup();
     }
+    
     if (theEvent.getController().getName()=="next ") {
       user_weightgoal = weight_slider.getValue();
       weight_slider.hide();
@@ -827,7 +876,15 @@ void controlEvent(ControlEvent theEvent) {
       setup();
     }
 
-    if (theEvent.getController().getName()=="Recipe1") {
+    if (theEvent.getController().getName()=="EatHighlight") {
+      state = 8;
+      bEatHightlight.hide();
+      bSkipHightlight.hide();
+      bDislikeHightlight.hide();
+      setup();
+    }
+
+    if ((theEvent.getController().getName()=="Recipe1")||(theEvent.getController().getName()=="Eat1")) {
       state = 7;
       addedCal = recipe_table.getFloat(imageRecipe1-1, "Kcal [int]");
       addedCarbs = recipe_table.getFloat(imageRecipe1-1, "Carbohydrates [int]");
@@ -849,7 +906,7 @@ void controlEvent(ControlEvent theEvent) {
       bRecipe3.hide();
       setup();
     }
-    if (theEvent.getController().getName()=="Recipe2") {
+    if (theEvent.getController().getName()=="Recipe2"||(theEvent.getController().getName()=="Eat2")) {
       state = 7;
       addedCal = recipe_table.getFloat(imageRecipe2-1, "Kcal [int]");
       addedCarbs = recipe_table.getFloat(imageRecipe2-1, "Carbohydrates [int]");
@@ -871,7 +928,7 @@ void controlEvent(ControlEvent theEvent) {
       bRecipe3.hide();
       setup();
     }
-    if (theEvent.getController().getName()=="Recipe3") {
+    if (theEvent.getController().getName()=="Recipe3"||(theEvent.getController().getName()=="Eat3")) {
       state = 7;
       addedCal = recipe_table.getFloat(imageRecipe3-1, "Kcal [int]");
       addedCarbs = recipe_table.getFloat(imageRecipe3-1, "Carbohydrates [int]");
@@ -893,6 +950,15 @@ void controlEvent(ControlEvent theEvent) {
       bRecipe3.hide();
       setup();
     }
+    
+    
+    if (theEvent.getController().getName()=="submitFinal") {
+      recommandationLike = int(recommandationSlider.getValue());
+      fitGoal = int(fitGoalSlider.getValue());
+      logIoTDataV2();
+      print("data_send");
+    }
+    
     if (theEvent.getController().getName()=="back6") {
       state = 6;
       bEatHightlight.hide();
@@ -951,6 +1017,17 @@ void controlEvent(ControlEvent theEvent) {
 // To IoT dataset
 void logIoTDataV2() {
   // Set resource id (refId of device in the project)
+  if (mealHighlight == 1) {
+    confirmedMeal = imageRecipe1;
+  }
+    if (mealHighlight == 2) {
+    confirmedMeal = imageRecipe2;
+  }
+    if (mealHighlight == 3) {
+    confirmedMeal = imageRecipe3;
+  }
+    
+  
   iotDS.device(uname);
   String act = "other";
   // Set activity for the log
@@ -959,7 +1036,8 @@ void logIoTDataV2() {
   } else {
     iotDS.activity("data_entry");
   }
-  iotDS.data("Time", 0000).data("chosen_recipe", recipeDataSend).data("Vegan", vegan).data("Meal_Type", mealTypeSelect).data("Meal_Reason", mealReasonSelect).data("Predict1", predict1()).data("Predict2", predict2()).data("PredictRandom", predict3).data("skipped_recipe", skipDataSend).data("disliked_recipe", recipeDataSend)
+  iotDS.data("Time", 0000).data("chosen_recipe", recipeDataSend).data("Vegan", vegan).data("Meal_Type", mealTypeSelect).data("Meal_Reason", mealReasonSelect).data("Predict1", imageRecipe1).data("Predict2", imageRecipe2).data("PredictRandom", imageRecipe3).data("skipped_recipe", skipDataSend).data("disliked_recipe", recipeDataSend)
+  .data("Recommandation_Like", recommandationLike).data("Fit_Goal", fitGoal).data("confirmend_meal", confirmedMeal).data("user_name", user_name)
     .data("xOlive Oil", ingredientsToSend[count_done][1]).data("xFlour", ingredientsToSend[count_done][2]).data("xbutter", ingredientsToSend[count_done][3]).data("xChicken", ingredientsToSend[count_done][4]).data("xSugar", ingredientsToSend[count_done][5])
     .data("xSalt", ingredientsToSend[count_done][6]).data("xEgg", ingredientsToSend[count_done][7]).data("xRice", ingredientsToSend[count_done][8]).data("xVegetable Oil", ingredientsToSend[count_done][9]).data("xPork", ingredientsToSend[count_done][10])
     .data("xBeef", ingredientsToSend[count_done][12]).data("xCheese", ingredientsToSend[count_done][12]).data("xGarlic", ingredientsToSend[count_done][13]).data("xOrange", ingredientsToSend[count_done][14]).data("xTurkey", ingredientsToSend[count_done][15])
