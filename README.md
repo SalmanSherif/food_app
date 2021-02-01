@@ -6,4 +6,4 @@ It utilises a trained and tested ML model to provide food suggestions to users.
 
 This code can be run with processing on any laptop.
 
-Use Version 13 or higher.
+Use Version 8.13 or higher.
